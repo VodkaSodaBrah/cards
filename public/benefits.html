@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Card Benefits — Verified v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1614;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --rule: #2a2420;
+    --accent: #b8431f;
+    --accent-2: #2d5d3a;
+    --accent-3: #c89211;
+    --muted: #6b6259;
+    --csp: #1d3a5f;
+    --cfu: #2d5d3a;
+    --ue:  #b8431f;
+    --nfa: #5c2c8a;
+    --verified: #2d5d3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    line-height: 1.5;
+    padding: 32px 20px 80px;
+    background-image:
+      radial-gradient(circle at 10% 0%, rgba(184,67,31,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 90% 100%, rgba(45,93,58,0.05) 0%, transparent 40%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1320px; margin: 0 auto; }
+  header {
+    border-top: 4px double var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 0 20px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -5px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-style: italic;
+  }
+  .subhead {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .verified-badge {
+    background: var(--verified);
+    color: var(--paper);
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+  }
+  .corrections {
+    background: rgba(184,67,31,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    margin-bottom: 36px;
+    border-radius: 2px;
+    font-size: 14px;
+  }
+  .corrections strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .corrections ul { list-style: none; }
+  .corrections li {
+    padding: 3px 0 3px 18px;
+    position: relative;
+    font-size: 13px;
+  }
+  .corrections li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .section-title::before {
+    content: attr(data-num);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .card-grid { grid-template-columns: 1fr; } }
+  .card-head {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .card-head::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--card-color);
+  }
+  .card-head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 8px;
+  }
+  .card-head .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .card-head .fee {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--card-color);
+    font-weight: 500;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--paper-2);
+    margin-bottom: 24px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 720px;
+  }
+  thead {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  th {
+    text-align: left;
+    padding: 14px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-right: 1px solid rgba(244,239,230,0.1);
+    vertical-align: bottom;
+  }
+  th:last-child { border-right: none; }
+  th.cat { width: 22%; }
+  th .card-tag {
+    display: block;
+    font-size: 9px;
+    opacity: 0.55;
+    margin-bottom: 4px;
+    letter-spacing: 0.2em;
+  }
+  th.csp { border-top: 3px solid var(--csp); }
+  th.cfu { border-top: 3px solid var(--cfu); }
+  th.ue  { border-top: 3px solid var(--ue); }
+  th.nfa { border-top: 3px solid var(--nfa); }
+  td {
+    padding: 14px 14px;
+    border-bottom: 1px solid rgba(42,36,32,0.1);
+    border-right: 1px solid rgba(42,36,32,0.08);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  td:last-child { border-right: none; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(184,67,31,0.04); }
+  td.cat-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ink);
+    background: rgba(42,36,32,0.04);
+  }
+  td.cat-label .sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .rate {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .rate.win {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .none {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .note {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .winners {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px;
+    margin: 32px 0;
+    border-radius: 2px;
+  }
+  .winners h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--accent-3);
+  }
+  .winners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .winner-item {
+    border-left: 2px solid var(--accent-3);
+    padding-left: 14px;
+  }
+  .winner-item .scenario {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .winner-item .pick {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-3);
+    letter-spacing: 0.08em;
+  }
+  .caveats {
+    background: var(--paper-2);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  .caveats strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .caveats ul { list-style: none; }
+  .caveats li {
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .caveats li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .src-list {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .src-list a { color: var(--csp); text-decoration: none; word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">
+      <span>Wallet Audit · M. (4 cards)</span>
+      <span>v2 · May 18, 2026</span>
+    </div>
+    <h1>The Four<br>Card Ledger.</h1>
+    <div class="subhead">
+      <span class="verified-badge">Verified against issuer pages</span>
+      <span>chase.com · navyfederal.org</span>
+    </div>
+  </header>
+
+  <div class="corrections">
+    <strong>What changed from v1</strong>
+    <ul>
+      <li>CSP baggage delay: 6 hours / 5 days (was wrongly listed as 12 hrs).</li>
+      <li>CSP 10% anniversary bonus is still listed as active on Chase's official page — removed the "ending Oct 2026" claim, which came from an unverified third-party blog.</li>
+      <li>United Explorer baggage delay: 6 hrs / 3 days (was wrongly listed as 12 hrs).</li>
+      <li>United Explorer purchase protection: up to $10,000 per item (not $500).</li>
+      <li>United Explorer free bag savings: up to $160 per roundtrip per the Chase page (was listed as $180).</li>
+      <li>Added: United Explorer 10% award flight discount on miles bookings (NEW perk, missed in v1).</li>
+      <li>Added: United Explorer earns up to 1,000 PQP/yr toward Premier status.</li>
+      <li>NavFed Amex rental insurance: removed "secondary" label (official page doesn't specify primary/secondary).</li>
+      <li>NavFed Amex: removed "Return Protection" and "Best Value Guarantee" — not listed on official NavFed page or current Amex benefits site.</li>
+    </ul>
+  </div>
+
+  <!-- CARD HEADERS -->
+  <div class="card-grid">
+    <div class="card-head" style="--card-color: #4a7fb8;">
+      <div class="label">01 / Travel Anchor</div>
+      <div class="name">Chase Sapphire Preferred</div>
+      <div class="fee">$95/yr · Visa Signature</div>
+    </div>
+    <div class="card-head" style="--card-color: #5d9c6e;">
+      <div class="label">02 / Everyday Catch-All</div>
+      <div class="name">Chase Freedom Unlimited</div>
+      <div class="fee">$0/yr · Visa</div>
+    </div>
+    <div class="card-head" style="--card-color: #d9603a;">
+      <div class="label">03 / Airline Co-Brand</div>
+      <div class="name">United℠ Explorer</div>
+      <div class="fee">$0 intro → $150/yr · Visa</div>
+    </div>
+    <div class="card-head" style="--card-color: #8b5cb8;">
+      <div class="label">04 / Daily Categories</div>
+      <div class="name">Navy Federal More Rewards</div>
+      <div class="fee">$0/yr · American Express</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: EARN RATES -->
+  <div class="section-title" data-num="§1">Earn Rates by Category</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="cat">Spend Category</th>
+          <th class="csp"><span class="card-tag">CSP</span>Sapphire Preferred</th>
+          <th class="cfu"><span class="card-tag">CFU</span>Freedom Unlimited</th>
+          <th class="ue"><span class="card-tag">UE</span>United Explorer</th>
+          <th class="nfa"><span class="card-tag">NFA</span>NavFed More Rewards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-label">Groceries (in-store)<span class="sub">supermarkets</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">3x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Groceries (online)<span class="sub">Instacart, etc.</span></td>
+          <td><span class="rate win">3x</span><span class="note">Excludes Walmart, Target, wholesale clubs</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">3x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Gas</td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">3x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Dining & restaurants<span class="sub">includes delivery, takeout</span></td>
+          <td><span class="rate win">3x</span></td>
+          <td><span class="rate">3%</span></td>
+          <td><span class="rate">2x</span></td>
+          <td><span class="rate win">3x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Transit & rideshare<span class="sub">Uber, Lyft, parking, tolls, transit</span></td>
+          <td><span class="rate">2x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">3x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">United Airlines purchases<span class="sub">flights, ancillaries, seat upgrades</span></td>
+          <td><span class="rate">2x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate win">9x</span><span class="note">6x from United (MileagePlus) + 3x from card</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Hotels (booked direct)</td>
+          <td><span class="rate win">2x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">2x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Other travel<span class="sub">non-United airfare, rentals</span></td>
+          <td><span class="rate win">2x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Travel via Chase Travel portal</td>
+          <td><span class="rate">5x</span></td>
+          <td><span class="rate win">5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Streaming services<span class="sub">select providers</span></td>
+          <td><span class="rate win">3x</span></td>
+          <td><span class="rate">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Drugstores</td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">3%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Everything else<span class="sub">base earn</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate win">1.5%</span></td>
+          <td><span class="rate">1x</span></td>
+          <td><span class="rate">1x</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 2: CREDITS & PERKS -->
+  <div class="section-title" data-num="§2">Annual Credits & Perks</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="cat">Credit / Perk</th>
+          <th class="csp">Sapphire Preferred</th>
+          <th class="cfu">Freedom Unlimited</th>
+          <th class="ue">United Explorer</th>
+          <th class="nfa">NavFed More Rewards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-label">Hotel credit</td>
+          <td>$50/yr Chase Travel hotel credit</td>
+          <td><span class="none">none</span></td>
+          <td>Up to $100/yr on prepaid United Hotels ($50 × 2 stays)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Anniversary bonus</td>
+          <td>10% of prior year's spend in points<span class="note">e.g. $25K spend = 2,500 bonus pts</span></td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Spend-gated travel credit</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>$100 United TravelBank after $10K spend/yr<br>10K-mile award flight discount after $20K spend/yr</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Rideshare credit</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>Up to $60/yr ($5/mo, enrollment required)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Rental car credit</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>Up to $50/yr Avis/Budget via cars.united.com</td>
+          <td>Up to 25% off via Amex CONNECT (not a credit)</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Charter flight credit</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>Up to $100/yr on JSX bookings</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Global Entry / TSA PreCheck / NEXUS</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>Up to $120 every 4 years</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">DoorDash / DashPass</td>
+          <td>DashPass free 12 mo + $10/mo non-restaurant promo (through 12/31/27)</td>
+          <td>6 mo DashPass free + $10/qtr non-restaurant credit (through 12/31/27)</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Instacart benefit</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>3 mo Instacart+ free, then 25% off + $10/mo credit (up to $120/yr through 12/31/27)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">In-flight discount</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>25% back on United food/drinks/Wi-Fi + Club premium drinks</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Award booking discount</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td><strong>10% off United award flight miles cost</strong> (15% w/ Premier)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Free checked bag</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>1st bag free for primary + 1 companion on United (up to $160 roundtrip)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Lounge access</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>2 United Club one-time passes/yr</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Priority boarding</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>Yes, on United flights</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Elite status earning</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td>1 PQP per $20 spent, up to 1,000 PQP/yr</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Lyft / Peloton offers</td>
+          <td>5x on Lyft through 9/30/27 · 5x on Peloton $150+ through 12/31/27</td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Member Deals / shopping portal</td>
+          <td>Chase Offers (rotating)</td>
+          <td>Chase Offers (rotating)</td>
+          <td>Chase Offers (rotating)</td>
+          <td>NavFed Member Deals (up to 15 pts/$1) + Amex Offers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 3: PROTECTIONS -->
+  <div class="section-title" data-num="§3">Travel & Purchase Protections</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="cat">Protection</th>
+          <th class="csp">Sapphire Preferred</th>
+          <th class="cfu">Freedom Unlimited</th>
+          <th class="ue">United Explorer</th>
+          <th class="nfa">NavFed More Rewards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-label">Rental car insurance</td>
+          <td><strong>Primary</strong>, up to $60K theft/collision</td>
+          <td>Secondary (per Chase Guide to Benefits)</td>
+          <td><strong>Primary</strong>, up to $60K theft/collision</td>
+          <td>Coverage for US/Canada rentals<span class="note">Primary/secondary not specified on official page</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Trip cancellation / interruption</td>
+          <td>Up to $10K/traveler, $20K/trip</td>
+          <td>Up to $1,500/traveler, $6K/trip</td>
+          <td>Up to $1,500/traveler, $6K/trip</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Trip delay reimbursement</td>
+          <td>After 12 hrs, up to $500/traveler</td>
+          <td><span class="none">none</span></td>
+          <td>After 12 hrs, up to $500/traveler</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Baggage delay</td>
+          <td>After 6 hrs, $100/day up to 5 days</td>
+          <td><span class="none">none</span></td>
+          <td>After 6 hrs, $100/day up to 3 days</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Lost luggage</td>
+          <td>Up to $3K per traveler</td>
+          <td><span class="none">none</span></td>
+          <td>Up to $3K per traveler</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Purchase protection</td>
+          <td>120 days, up to $500/item</td>
+          <td>120 days, up to $500/item</td>
+          <td>120 days, <strong>up to $10,000/item</strong></td>
+          <td>Per Amex Guide to Benefits</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Extended warranty</td>
+          <td>+1 yr on warranties ≤3 yrs</td>
+          <td>+1 yr on warranties ≤3 yrs</td>
+          <td>+1 yr on warranties ≤3 yrs</td>
+          <td>Per Amex Guide to Benefits</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Roadside assistance</td>
+          <td>Pay-per-use dispatch</td>
+          <td>Pay-per-use dispatch</td>
+          <td>Visa Signature Concierge</td>
+          <td>Included (towing, transport, replacement driver)</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Foreign transaction fee</td>
+          <td><strong>None</strong></td>
+          <td>3%</td>
+          <td><strong>None</strong></td>
+          <td><strong>None</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4: REWARDS MECHANICS -->
+  <div class="section-title" data-num="§4">Rewards Currency & Redemption</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="cat">Mechanic</th>
+          <th class="csp">Sapphire Preferred</th>
+          <th class="cfu">Freedom Unlimited</th>
+          <th class="ue">United Explorer</th>
+          <th class="nfa">NavFed More Rewards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-label">Currency</td>
+          <td>Chase Ultimate Rewards</td>
+          <td>Chase Ultimate Rewards (cash-back labeled, but UR underneath)</td>
+          <td>United MileagePlus miles</td>
+          <td>NavFed points</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Base value</td>
+          <td>1¢ cash · 1.25¢ via Chase Travel portal</td>
+          <td>1¢ cash</td>
+          <td>~1.2¢ baseline (varies by redemption)</td>
+          <td>1¢ cash (redeem in $50 increments)</td>
+        </tr>
+        <tr>
+          <td class="cat-label">Transfer partners</td>
+          <td><strong>Yes — 13 partners:</strong> Aer Lingus, Air Canada Aeroplan, Air France/KLM, British Airways, Iberia, JetBlue, Singapore, Southwest, United, Virgin Atlantic, IHG, Marriott, Hyatt</td>
+          <td>Only via transfer to CSP first</td>
+          <td>United partners (Star Alliance + bilaterals)</td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Points Boost</td>
+          <td>Up to 1.5¢ (1.75¢ select premium cabin) via Chase Travel</td>
+          <td>Inherits boost when pooled to CSP</td>
+          <td><span class="none">n/a</span></td>
+          <td><span class="none">none</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Pool with other cards</td>
+          <td>Yes — receives points from CFU, Flex, Reserve, household members</td>
+          <td>Yes — transfer to any UR card</td>
+          <td><span class="none">n/a — miles stay in MileagePlus</span></td>
+          <td><span class="none">n/a</span></td>
+        </tr>
+        <tr>
+          <td class="cat-label">Expiration</td>
+          <td>Never (while account open)</td>
+          <td>Never (while account open)</td>
+          <td>Never</td>
+          <td>Never (while account open)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WINNERS BY CATEGORY -->
+  <div class="winners">
+    <h3>What to pull out — by scenario</h3>
+    <div class="winners-grid">
+      <div class="winner-item">
+        <div class="scenario">Grocery run, gas pump, dinner out, Uber</div>
+        <div class="pick">→ NavFed More Rewards (3x)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Online groceries (Instacart, Amazon Fresh)</div>
+        <div class="pick">→ CSP or NavFed (both 3x)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Booking a flight on United</div>
+        <div class="pick">→ United Explorer (free bag, priority, 9x)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Non-United airfare, hotels direct, cruise</div>
+        <div class="pick">→ CSP (2x + primary rental, trip protection)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Streaming (Netflix, Spotify, etc.)</div>
+        <div class="pick">→ CSP (3x)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Drugstores (CVS, Walgreens)</div>
+        <div class="pick">→ CFU (3%)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Anything not in a bonus category</div>
+        <div class="pick">→ CFU (1.5%)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Anything booked abroad / in pesos</div>
+        <div class="pick">→ Not CFU. Use CSP, UE, or NFA.</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Rental car (decline counter insurance)</div>
+        <div class="pick">→ CSP or UE (both primary)</div>
+      </div>
+      <div class="winner-item">
+        <div class="scenario">Big-ticket purchase ($500+)</div>
+        <div class="pick">→ United Explorer (up to $10K purchase protection)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAVEATS -->
+  <div class="caveats">
+    <strong>Worth knowing (verified)</strong>
+    <ul>
+      <li>United Explorer's $150 annual fee is waived your first year only. After that, the $100 hotel credit + $60 rideshare + $50 rental + free bag savings need to add up to clear it.</li>
+      <li>NavFed Amex acceptance in Mexico is meaningfully worse than Visa. Don't rely on it as your only card south of the border.</li>
+      <li>CFU has a 3% foreign transaction fee. Don't use abroad.</li>
+      <li>CSP's 3x online grocery excludes Walmart, Target, and wholesale clubs (those earn 1x).</li>
+      <li>NavFed 3x category requires correct merchant coding — purchases at superstores, supermarkets, or warehouse clubs for gas may only earn 1x. Same for restaurants inside hotels/casinos/event venues.</li>
+      <li>United Explorer purchase protection of $10K/item is unusually high — use it for any major electronics or appliance purchases.</li>
+      <li>Chase 5/24 rule: 5+ personal cards (any issuer) opened in 24 months = Chase denies new apps.</li>
+      <li>United Explorer has a 1,000 PQP/yr cap — small contribution toward Premier status but it exists.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <span>Verified May 18, 2026 against official issuer pages</span>
+    <span>Pricing & terms subject to change without notice</span>
+  </footer>
+
+  <div class="src-list">
+    <strong>Sources verified directly:</strong><br>
+    creditcards.chase.com/rewards-credit-cards/sapphire/preferred<br>
+    creditcards.chase.com/travel-credit-cards/united/united-explorer<br>
+    navyfederal.org/loans-cards/credit-cards/more-rewards.html<br>
+    creditcards.chase.com/cash-back-credit-cards/freedom/unlimited
+  </div>
+
+</div>
+</body>
+</html>
